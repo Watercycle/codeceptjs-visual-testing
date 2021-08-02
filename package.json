@@ -1,0 +1,26 @@
+{
+  "name": "codeceptjs-visual-testing",
+  "version": "1.0.0",
+  "description": "A CodeceptJS E2E test helper that makes use of pixelmatch and a little dom interaction to make sure your UI doesn't unexpectedly change.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Codeceptjs",
+    "Visual",
+    "Testing",
+    "UI",
+    "Testing",
+    "E2E",
+    "Acceptance",
+    "Testing",
+    "Helper"
+  ],
+  "author": "Matthew Spero",
+  "license": "MIT",
+  "dependencies": {
+    "pixelmatch": "^5.2.1",
+    "pngjs": "^6.0.0"
+  }
+}
