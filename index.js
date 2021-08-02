@@ -228,7 +228,7 @@ class VisualTesting extends Helper {
 
             const uberCssSelector = options.preserveTexts.join(',');
             const targetNodes = Array.from(document.querySelectorAll(uberCssSelector));
-            const textNodes = [].concat(targetNodes.map((node) => getTextNodesUnderElement(node)))[0];
+            const textNodes = [].concat(...targetNodes.map((node) => getTextNodesUnderElement(node)));
 
             // -------------------- Unique Code Below --------------------------
 
@@ -255,7 +255,7 @@ class VisualTesting extends Helper {
 
             const uberCssSelector = options.preserveTexts.join(',');
             const targetNodes = Array.from(document.querySelectorAll(uberCssSelector));
-            const textNodes = [].concat(targetNodes.map((node) => getTextNodesUnderElement(node)))[0];
+            const textNodes = [].concat(...targetNodes.map((node) => getTextNodesUnderElement(node)));
 
             // -------------------- Unique Code Below --------------------------
 
