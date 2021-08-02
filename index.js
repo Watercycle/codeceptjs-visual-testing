@@ -141,8 +141,12 @@ class VisualTesting extends Helper {
 
         const results = this._compareImages(baseImageBuffer, newImageBuffer);
         if (results.mismatchedPixelsPercent > allowedMismatchedPixelsPercent) {
+            const newFailedImagePath = this._getNewFailedImagePath(screenshotName);
+
             this.debug(`Creating/Updating diff image: ${diffImagePath}.`);
             fs.writeFileSync(diffImagePath, results.pngDiffBuffer);
+            this.debug(`Creating/Updating new failed image: ${diffImagePath}.`);
+            fs.writeFileSync(newFailedImagePath, newImageBuffer);
 
             throw new Error(
                 `It looks like ${screenshotName} has visually changed! ` +
@@ -184,7 +188,12 @@ class VisualTesting extends Helper {
 
     _getBaseDiffPath(screenshotName) {
         return path.resolve(global.codecept_dir,
-            path.join(this.config.diffFolder, `${screenshotName}.png`));
+            path.join(this.config.diffFolder, `${screenshotName}_diff.png`));
+    }
+
+    _getNewFailedImagePath(screenshotName) {
+        return path.resolve(global.codecept_dir,
+            path.join(this.config.diffFolder, `${screenshotName}_failed.png`));
     }
 
     _getBaseIgnoredTexts(screenshotName) {
