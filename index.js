@@ -146,7 +146,7 @@ class VisualTesting extends Helper {
 
             throw new Error(
                 `It looks like ${screenshotName} has visually changed! ` +
-                `${results.mismatchedPixelsPercent.toFixed(2)}% ` +
+                `${(results.mismatchedPixelsPercent * 100).toFixed(2)}% ` +
                 `of pixels were changed with a max of ` +
                 `${allowedMismatchedPixelsPercent.toFixed(2)}% allowed. ` +
                 `Take a look at the following file to see what changed: ${diffImagePath}.`
