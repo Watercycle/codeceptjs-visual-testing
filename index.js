@@ -17,13 +17,13 @@ class VisualTesting extends Helper {
      *
      * Allowed Options:
      *
-     * - options.allowedMismatchedPixelsPercent (Default: 0.01)
+     * - options.allowedMismatchedPixelsPercent (Default: 1)
      *
-     *   This should be a float between 0.00 and 1.00 that determines how many
-     *   mismatched pixels are allowed before a test fails. Typically values
-     *   between 0.01 and 0.05 should be chosen. The reason we do this is because
-     *   it's pretty common for browsers to render things ever so slightly differently,
-     *   and we'd like to avoid those kinds of false positives.
+     *   This determines how many mismatched pixels are allowed before a test
+     *   fails. Typically values between 1 and 5 should be chosen. The reason
+     *   we do this is because it's pretty common for browsers to render things
+     *   ever so slightly differently, and we'd like to avoid those kinds of
+     *   false positives.
      *
      * - options.preserveTexts (Default: [])
      *
@@ -48,7 +48,7 @@ class VisualTesting extends Helper {
      * @param options { ?preserveTexts: string[], ?preserveTexts: number, ?hideElements: string[] } - See docblock.
      */
     async dontSeeVisualChanges(screenshotName, options = {}) {
-        options.allowedMismatchedPixelsPercent = options.allowedMismatchedPixelsPercent ?? 0.01;
+        options.allowedMismatchedPixelsPercent = options.allowedMismatchedPixelsPercent ?? 1;
         options.preserveTexts = options.preserveTexts ?? [];
         options.hideElements = options.hideElements ?? [];
 
@@ -140,15 +140,15 @@ class VisualTesting extends Helper {
         }
 
         const results = this._compareImages(baseImageBuffer, newImageBuffer);
-        if (results.mismatchedPixelsPercent > allowedMismatchedPixelsPercent) {
+        if (results.mismatchedPixelsPercent > (allowedMismatchedPixelsPercent / 100)) {
             this.debug(`Creating/Updating diff image: ${diffImagePath}.`);
             fs.writeFileSync(diffImagePath, results.pngDiffBuffer);
 
             throw new Error(
                 `It looks like ${screenshotName} has visually changed! ` +
-                `${(results.mismatchedPixelsPercent * 100).toFixed(2)}% ` +
+                `${results.mismatchedPixelsPercent.toFixed(2)}% ` +
                 `of pixels were changed with a max of ` +
-                `${(allowedMismatchedPixelsPercent * 100).toFixed(2)}% allowed. ` +
+                `${allowedMismatchedPixelsPercent.toFixed(2)}% allowed. ` +
                 `Take a look at the following file to see what changed: ${diffImagePath}.`
             );
         }
