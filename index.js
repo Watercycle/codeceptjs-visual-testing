@@ -73,6 +73,11 @@ class VisualTesting extends Helper {
         const baseImagePath = this._getBaseImagePath(screenshotName);
         const baseImageBuffer = await this._captureScreenAltered(screenshotName, options);
 
+        // Create the base folder if it doesn't exist already.
+        if (!fs.existsSync(this.config.baseFolder)) {
+            fs.mkdirSync(this.config.baseFolder);
+        }
+
         this.debug(`Creating/Updating base image: ${baseImagePath}.`);
         fs.writeFileSync(baseImagePath, baseImageBuffer);
 
@@ -173,18 +178,15 @@ class VisualTesting extends Helper {
     }
 
     _getBaseImagePath(screenshotName) {
-        return path.resolve(global.codecept_dir,
-            path.join(this.config.baseFolder, `${screenshotName}.png`));
+        return path.resolve(global.codecept_dir, this.config.baseFolder, `${screenshotName}.png`);
     }
 
     _getBaseIgnoredTextsPath(screenshotName) {
-        return path.resolve(global.codecept_dir,
-            path.join(this.config.baseFolder, `${screenshotName}_dom.json`));
+        return path.resolve(global.codecept_dir, this.config.baseFolder, `${screenshotName}_dom.json`);
     }
 
     _getBaseDiffPath(screenshotName) {
-        return path.resolve(global.codecept_dir,
-            path.join(this.config.diffFolder, `${screenshotName}.png`));
+        return path.resolve(global.codecept_dir, this.config.diffFolder, `${screenshotName}.png`);
     }
 
     _getBaseIgnoredTexts(screenshotName) {
