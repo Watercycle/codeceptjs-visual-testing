@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ./images/test-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    volumes:
+      - "./images/test-app/index.html:/usr/share/nginx/html/index.html"
+  codeceptjs:
+    build:
+      context: ../
+      dockerfile: ./tests/images/codeceptjs/Dockerfile
+    depends_on:
+      - web
+    volumes:
+      - ../:/app/
