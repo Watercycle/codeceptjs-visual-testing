@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "codeceptjs run --config tests/src/codecept.conf.js",
-    "test:docker": "docker compose -f ./tests/docker-compose.yml run codeceptjs",
-    "test:build": "docker compose -f ./tests/docker-compose.yml build"
+    "test:docker": "docker compose run codeceptjs",
+    "test:build": "docker compose build"
   },
   "keywords": [
     "Codeceptjs",
