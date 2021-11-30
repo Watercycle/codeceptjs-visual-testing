@@ -1,16 +1,18 @@
 name: Test
+
 on: push
+
 jobs:
-  test:
+  e2e:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Build Containers
-        run: docker compose build
+    - name: Start containers
+      run: docker compose -f "docker-compose.yml" up -d --build
 
-      - name: Test
-        run: docker compose run codeceptjs; echo $?
+    - name: Test
+      run: docker compose run codeceptjs; echo $?
