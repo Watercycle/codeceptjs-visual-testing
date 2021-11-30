@@ -14,5 +14,5 @@ jobs:
     - name: Build Images
       run: docker build . -t codeceptjs-visual-testing:local
 
-    - name: Test
-      run: docker compose run tester; echo $?
+    - name: Run Tests
+      run: ls; pwd; docker compose run tests; echo $?

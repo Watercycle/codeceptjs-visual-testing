@@ -7,7 +7,7 @@
     "test": "codeceptjs run --config tests/src/codecept.conf.js",
     "test:build": "docker build . -t codeceptjs-visual-testing:local",
     "test:server": "node tests/test-app/server.js",
-    "test:docker": "docker compose run tester"
+    "test:docker": "docker compose run tests"
   },
   "keywords": [
     "Codeceptjs",
