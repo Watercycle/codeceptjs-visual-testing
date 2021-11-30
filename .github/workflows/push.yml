@@ -11,6 +11,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Test Testing
+      run: docker build -f tests/images/codeceptjs/Dockerfile . -t cvt-test-app
+
     - name: Start containers
       run: docker compose -f "docker-compose.yml" up -d --build
 
