@@ -3,7 +3,7 @@ exports.config = {
   output: '../output',
   helpers: {
     Puppeteer: {
-      url: 'http://web:80',
+      url: 'http://web:3000',
       host: process.env.HOST,
       show: false,
       windowSize: '1200x900',

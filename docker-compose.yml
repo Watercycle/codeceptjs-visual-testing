@@ -2,18 +2,16 @@ version: "3.9"
 
 services:
   web:
-    build:
-      context: ./tests/images/test-app
-      dockerfile: Dockerfile
+    image: codeceptjs-visual-testing:local
     ports:
-      - "3000:80"
+      - "3000:3000"
     volumes:
-      - "./tests/images/test-app/index.html:/usr/share/nginx/html/index.html"
-  codeceptjs:
-    build:
-      context: ./
-      dockerfile: ./tests/images/codeceptjs/Dockerfile
+      - ./:/app/
+    command: "npm run test:server"
+  tester:
+    image: codeceptjs-visual-testing:local
     depends_on:
       - web
     volumes:
       - ./:/app/
+    command: "npm run test"

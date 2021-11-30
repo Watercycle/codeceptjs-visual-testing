@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "codeceptjs run --config tests/src/codecept.conf.js",
-    "test:docker": "docker compose run codeceptjs",
-    "test:build": "docker compose build"
+    "test:build": "docker build . -t codeceptjs-visual-testing:local",
+    "test:server": "node tests/test-app/server.js",
+    "test:docker": "docker compose run tester"
   },
   "keywords": [
     "Codeceptjs",
