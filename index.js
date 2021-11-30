@@ -5,17 +5,17 @@ const fs = require('fs')
 const path = require('path')
 
 class VisualTesting extends Helper {
-    parsedConfig;
+    parsedConfig = {};
 
     get driver() {
-        const driver = this.helpers.Puppeteer; this.helpers.WebDriver;
+        const driver = this.helpers.Puppeteer ?? this.helpers.WebDriver;
 
-        if (driver) {
-            return driver;
-        } else {
-            throw new Error('(VisualTestingHelper) Unsupported Driver Detected. ' +
-                'Sorry! Please open an issue to add support.');
+        if (!driver) {
+            console.warn('(VisualTestingHelper) Unsupported driver detected. ' +
+                'Please open an issue to add explicit support!');
         }
+
+        return driver;
     }
 
     constructor(config) {
