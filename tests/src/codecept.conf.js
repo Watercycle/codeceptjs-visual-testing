@@ -14,8 +14,8 @@ exports.config = {
     },
     VisualTesting: {
       require: '../../index.js',
-      baseFolder: '../output/visual/base/',
-      diffFolder: '../output/visual/diff/',
+      baseFolder: '../visual/',
+      diffFolder: '../output/visual/',
     },
   },
   include: {
