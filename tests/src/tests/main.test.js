@@ -1,6 +1,11 @@
 Feature('Visual Testing');
 
-Scenario('Can access the home page', ({ I }) => {
+Scenario('loads', ({ I }) => {
   I.amOnPage('/');
-  I.see('Do you also fail?!');
+  I.see('Hello World!');
+});
+
+Scenario('works with the default options', ({ I }) => {
+  I.amOnPage('/');
+  I.dontSeeVisualChanges("default-options");
 });

@@ -11,7 +11,12 @@ exports.config = {
       chrome: {
         args: ["--no-sandbox"]
       }
-    }
+    },
+    VisualTesting: {
+      require: '../../index.js',
+      baseFolder: '../output/visual/base/',
+      diffFolder: '../output/visual/diff/',
+    },
   },
   include: {
     I: './steps_file.js'
@@ -21,13 +26,7 @@ exports.config = {
   name: 'tests',
   plugins: {
     pauseOnFail: {},
-    retryFailedStep: {
-      enabled: true
-    },
     tryTo: {
-      enabled: true
-    },
-    screenshotOnFail: {
       enabled: true
     }
   }

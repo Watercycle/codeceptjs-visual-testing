@@ -4,11 +4,12 @@
   "description": "A CodeceptJS E2E test helper that makes use of pixelmatch and a little dom interaction to make sure your UI doesn't unexpectedly change.",
   "main": "index.js",
   "scripts": {
-    "test": "codeceptjs run --config tests/src/codecept.conf.js",
+    "test": "codeceptjs run --config tests/src/codecept.conf.js --verbose",
     "test:build": "docker build . -t codeceptjs-visual-testing:local",
     "test:server": "node tests/test-app/server.js",
-    "test:docker": "docker compose run tests",
-    "test:dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml run tests"
+    "test:ci": "docker compose run tests",
+    "test:dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml run tests bash",
+    "test:update": "UPDATE_VISUALS=1 codeceptjs run --config tests/src/codecept.conf.js --verbose"
   },
   "keywords": [
     "Codeceptjs",

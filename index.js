@@ -5,6 +5,28 @@ const fs = require('fs')
 const path = require('path')
 
 class VisualTesting extends Helper {
+    parsedConfig;
+
+    get driver() {
+        const driver = this.helpers.Puppeteer; this.helpers.WebDriver;
+
+        if (driver) {
+            return driver;
+        } else {
+            throw new Error('(VisualTestingHelper) Unsupported Driver Detected. ' +
+                'Sorry! Please open an issue to add support.');
+        }
+    }
+
+    constructor(config) {
+        super(config)
+
+        this.parsedConfig = {
+            imageFolder: path.resolve(global.codecept_dir, config.baseFolder),
+            diffFolder: path.resolve(global.codecept_dir, config.diffFolder)
+        }
+    }
+
     /**
      * This function allows you to do visual regression testing while offering
      * a convenient way to automatically update tests.
@@ -53,7 +75,8 @@ class VisualTesting extends Helper {
         options.hideElements = options.hideElements ?? [];
 
         if (!screenshotName) {
-            throw new Error('You must pass a unique identifier to `I.dontSeeChanges`.');
+            throw new Error('(VisualTestingHelper) The 1st argument to ' +
+                '`I.dontSeeChanges` must be a unique identifier string.');
         }
 
         if (process.env.UPDATE_VISUALS) {
@@ -74,8 +97,8 @@ class VisualTesting extends Helper {
         const baseImageBuffer = await this._captureScreenAltered(screenshotName, options);
 
         // Create the base folder if it doesn't exist already.
-        if (!fs.existsSync(this.config.baseFolder)) {
-            fs.mkdirSync(this.config.baseFolder);
+        if (!fs.existsSync(this.parsedConfig.imageFolder)) {
+            fs.mkdirSync(this.parsedConfig.imageFolder, { recursive: true });
         }
 
         this.debug(`Creating/Updating base image: ${baseImagePath}.`);
@@ -112,16 +135,20 @@ class VisualTesting extends Helper {
      * This is mainly used by the dontSeeVisualChanges method's preserveTexts option.
      */
     async _captureScreenAltered(screenshotName, options) {
-        const baseBaseIgnoredTexts = await this._getBaseIgnoredTexts(screenshotName);
-        const originalTexts = await this._getIgnoredTexts(options);
 
-        await this._setIgnoredTexts(options, baseBaseIgnoredTexts);
-        await this._setHiddenElements(options, true);
+        if (options.preserveTexts.length > 0) {
+            const baseBaseIgnoredTexts = await this._getBaseIgnoredTexts(screenshotName);
+            await this._setIgnoredTexts(options, baseBaseIgnoredTexts);
+        }
+        if (options.hideElements.length > 0) await this._setHiddenElements(options, true);
 
         const screenshotBuffer = await this._captureScreen();
 
-        await this._setIgnoredTexts(options, originalTexts);
-        await this._setHiddenElements(options, false);
+        if (options.preserveTexts.length > 0) {
+            const originalTexts = await this._getIgnoredTexts(options);
+            await this._setIgnoredTexts(options, originalTexts);
+        }
+        if (options.hideElements.length > 0) await this._setHiddenElements(options, false);
 
         return screenshotBuffer;
     }
@@ -132,16 +159,18 @@ class VisualTesting extends Helper {
         allowedMismatchedPixelsPercent
     ) {
         const baseImagePath = this._getBaseImagePath(screenshotName);
+        if (!fs.existsSync(baseImagePath)) {
+            throw new Error(`(VisualTestingHelper) Couldn't find a base image in '${baseImagePath}'. ` +
+            `This likely means that it's a new test or the unique identifier string was changed. ` +
+            `Run 'UPDATE_VISUALS=1 codeceptjs run' to establish a new baseline.`);
+        }
+
         const baseImageBuffer = fs.readFileSync(baseImagePath);
         const diffImagePath = this._getBaseDiffPath(screenshotName);
 
-        if (!fs.existsSync(baseImagePath)) {
-            throw new Error(`Couldn't find base image in '${baseImagePath}'.`);
-        }
-
         // Create the diff folder if it doesn't exist already.
-        if (!fs.existsSync(this.config.diffFolder)) {
-            fs.mkdirSync(this.config.diffFolder);
+        if (!fs.existsSync(this.parsedConfig.diffFolder)) {
+            fs.mkdirSync(this.parsedConfig.diffFolder, { recursive: true });
         }
 
         const results = this._compareImages(baseImageBuffer, newImageBuffer);
@@ -150,7 +179,7 @@ class VisualTesting extends Helper {
             fs.writeFileSync(diffImagePath, results.pngDiffBuffer);
 
             throw new Error(
-                `It looks like ${screenshotName} has visually changed! ` +
+                `(VisualTestingHelper) It looks like ${screenshotName} has visually changed! ` +
                 `${(results.mismatchedPixelsPercent * 100).toFixed(2)}% ` +
                 `of pixels were changed with a max of ` +
                 `${allowedMismatchedPixelsPercent.toFixed(2)}% allowed. ` +
@@ -178,15 +207,15 @@ class VisualTesting extends Helper {
     }
 
     _getBaseImagePath(screenshotName) {
-        return path.resolve(global.codecept_dir, this.config.baseFolder, `${screenshotName}.png`);
+        return path.resolve(this.parsedConfig.imageFolder, `${screenshotName}.png`);
     }
 
     _getBaseIgnoredTextsPath(screenshotName) {
-        return path.resolve(global.codecept_dir, this.config.baseFolder, `${screenshotName}_dom.json`);
+        return path.resolve(this.parsedConfig.imageFolder, `${screenshotName}_dom.json`);
     }
 
     _getBaseDiffPath(screenshotName) {
-        return path.resolve(global.codecept_dir, this.config.diffFolder, `${screenshotName}.png`);
+        return path.resolve(this.parsedConfig.diffFolder, `${screenshotName}.png`);
     }
 
     _getBaseIgnoredTexts(screenshotName) {
@@ -208,11 +237,11 @@ class VisualTesting extends Helper {
     }
 
     _captureScreen() {
-        return this.helpers['WebDriver'].saveScreenshot('visual_temp.png')
+        return this.driver.saveScreenshot('visual_temp.png')
     }
 
     _getIgnoredTexts(options) {
-        return this.helpers['WebDriver'].executeScript((options) => {
+        return this.driver.executeScript((options) => {
             // NOTE: Keep this in sync with setIgnoredTexts
             function getTextNodesUnderElement(node) {
                 let textNodes = [];
@@ -239,7 +268,7 @@ class VisualTesting extends Helper {
     }
 
     _setIgnoredTexts(options, ignoredTexts) {
-        return this.helpers['WebDriver'].executeScript((options, ignoredTexts) => {
+        return this.driver.executeScript((options, ignoredTexts) => {
             // NOTE: Keep this in sync with getIgnoredTexts
             function getTextNodesUnderElement(node) {
                 let textNodes = [];
@@ -283,7 +312,7 @@ class VisualTesting extends Helper {
     }
 
     _setHiddenElements(options, hidden) {
-        return this.helpers['WebDriver'].executeScript((options, hidden) => {
+        return this.driver.executeScript((options, hidden) => {
             function createDynamicCss(css) {
                 const style = document.createElement('style');
                 style.id = 'e2e-visual-testing-global-styles'

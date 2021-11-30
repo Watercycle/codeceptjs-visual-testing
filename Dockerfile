@@ -1,4 +1,4 @@
-FROM node:16.13 AS base
+FROM node:16.13
 
 # Available versions: https://www.ubuntuupdates.org/package/google_chrome/stable/main/base/google-chrome-stable
 # Keep in mind that certain versions of Puppeteer only work with certain versions of Chrome.
