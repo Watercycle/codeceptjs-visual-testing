@@ -5,13 +5,9 @@ services:
     image: codeceptjs-visual-testing:local
     ports:
       - "3000:3000"
-    volumes:
-      - ./:/app/
     command: "npm run test:server"
   tests:
     image: codeceptjs-visual-testing:local
     depends_on:
       - web
-    volumes:
-      - ./:/app/
     command: "npm run test"

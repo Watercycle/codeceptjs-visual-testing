@@ -3,7 +3,7 @@ name: Test
 on: push
 
 jobs:
-  e2e:
+  e2e-tests:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
@@ -15,4 +15,4 @@ jobs:
       run: docker build . -t codeceptjs-visual-testing:local
 
     - name: Run Tests
-      run: ls; pwd; docker compose run tests; echo $?
+      run: docker compose run tests

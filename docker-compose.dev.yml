@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  web:
+    volumes:
+      - ./:/app/
+  tests:
+    volumes:
+      - ./:/app/
