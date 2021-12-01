@@ -57,7 +57,7 @@ Scenario('the dashboard page looks the same', async () => {
 ### Creating and Updating Baseline Images
 
 1. Run `UPDATE_VISUALS=1 codeceptjs run`
-2. Commit the screenshot generated in `tests/visual/base`
+2. Commit the files generated in your `baseFolder`
 
 **Note:** Visual tests should generally be used sparingly and on pages unlikely to change.
 Altering the page style or layout will mean needing to update the corresponding visual tests.
