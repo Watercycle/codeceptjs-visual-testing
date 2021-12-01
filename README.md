@@ -4,6 +4,8 @@
 
 It makes use of [pixelmatch](https://github.com/mapbox/pixelmatch) and [pngjs](https://github.com/lukeapage/pngjs) in order to avoid the ridiculous dependencies for ImageMagick and applies some basic heuristics to help prevent false positives.
 
+![0-mismatch](https://user-images.githubusercontent.com/5145006/144205486-ad83e74d-be67-40e8-a082-de6e0b706ac4.png)
+
 # Installation
 
 1. Run
