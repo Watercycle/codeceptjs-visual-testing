@@ -59,7 +59,9 @@ Scenario('the dashboard page looks the same', async () => {
 1. Run `UPDATE_VISUALS=1 codeceptjs run`
 2. Commit the files generated in your `baseFolder`
 
-**Note:** Visual tests should generally be used sparingly and on pages unlikely to change.
+### Disclaimer
+
+Visual tests should generally be used sparingly and on pages unlikely to change.
 Altering the page style or layout will mean needing to update the corresponding visual tests.
 Similarly, unless you're using [git lfs](https://git-lfs.github.com/), the binary image files
 may eventually take up a lot of space in your Git repo history.
