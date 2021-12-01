@@ -35,7 +35,7 @@ exports.config = {
 
 # Usage
 
-## Example
+### Example
 
 ```js
 Scenario('the dashboard page looks the same', async () => {
@@ -47,12 +47,12 @@ Scenario('the dashboard page looks the same', async () => {
      // Optionally, hide elements that can't be consistently reproduced (Default: []).
      hideElements: ['.some-randmom-popup'],
      // Optionally, allow for more variation in the screenshot without failing the test (Default: 1).
-     allowedMismatchedPixelsPercent: 3,
-   });
-});
+     allowedMismatchedPixelsPercent: 3
+   })
+})
 ```
 
-## Creating and Updating Baseline Images
+### Creating and Updating Baseline Images
 
 1. Run `UPDATE_VISUALS=1 codeceptjs run`
 2. Commit the screenshot generated in `tests/visual/base`
