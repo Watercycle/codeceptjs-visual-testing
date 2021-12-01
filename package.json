@@ -9,6 +9,7 @@
     "test:build": "docker build . -t codeceptjs-visual-testing:local",
     "test:server": "node tests/test-app/server.js",
     "test:ci": "docker compose run tests",
+    "test:docker": "docker compose -f docker-compose.yml -f docker-compose.dev.yml run tests",
     "test:update": "UPDATE_VISUALS=1 codeceptjs run --config tests/src/codecept.conf.js --verbose"
   },
   "keywords": [
