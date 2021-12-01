@@ -1,0 +1,1 @@
+["\n    ","Hello World!","\n\n    ","\n        ","Some Dynamic Text: ","\n        ","1638346037560","    \n    ","\n\n    ","\n        ","Some More Dynamic Text: ","\n        ","1638346037560","    \n    ","\n\n    ","\n        for (const el of document.getElementsByClassName(\"dynamic-text\")) {\n            el.innerHTML = (new Date()).getTime()\n        }\n    ","\n  \n"]

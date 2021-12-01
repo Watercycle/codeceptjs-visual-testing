@@ -25,7 +25,6 @@ exports.config = {
   mocha: {},
   name: 'tests',
   plugins: {
-    pauseOnFail: {},
     tryTo: {
       enabled: true
     }

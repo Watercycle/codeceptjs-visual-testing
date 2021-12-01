@@ -1,8 +1,9 @@
 const Helper = require('@codeceptjs/helper');
 const pixelmatch = require('pixelmatch')
 const PNG = require('pngjs').PNG;
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
+const assert = require('assert');
 
 class VisualTesting extends Helper {
     parsedConfig = {};
@@ -75,7 +76,7 @@ class VisualTesting extends Helper {
         options.hideElements = options.hideElements ?? [];
 
         if (!screenshotName) {
-            throw new Error('(VisualTestingHelper) The 1st argument to ' +
+            assert.fail('(VisualTestingHelper) The 1st argument to ' +
                 '`I.dontSeeChanges` must be a unique identifier string.');
         }
 
@@ -160,7 +161,7 @@ class VisualTesting extends Helper {
     ) {
         const baseImagePath = this._getBaseImagePath(screenshotName);
         if (!fs.existsSync(baseImagePath)) {
-            throw new Error(`(VisualTestingHelper) Couldn't find a base image in '${baseImagePath}'. ` +
+            assert.fail(`(VisualTestingHelper) Couldn't find a base image in '${baseImagePath}'. ` +
             `This likely means that it's a new test or the unique identifier string was changed. ` +
             `Run 'UPDATE_VISUALS=1 codeceptjs run' to establish a new baseline.`);
         }
@@ -178,12 +179,13 @@ class VisualTesting extends Helper {
             this.debug(`Creating/Updating diff image: ${diffImagePath}.`);
             fs.writeFileSync(diffImagePath, results.pngDiffBuffer);
 
-            throw new Error(
-                `(VisualTestingHelper) It looks like ${screenshotName} has visually changed! ` +
+            assert.fail(
+                `(VisualTestingHelper) It looks like the test '${screenshotName}' has visually changed! ` +
                 `${(results.mismatchedPixelsPercent * 100).toFixed(2)}% ` +
                 `of pixels were changed with a max of ` +
                 `${allowedMismatchedPixelsPercent.toFixed(2)}% allowed. ` +
-                `Take a look at the following file to see what changed: ${diffImagePath}.`
+                `Take a look at the following file to see what changed: ${diffImagePath}. ` +
+                `If the changes make sense, run 'UPDATE_VISUALS=1 codeceptjs run'.`
             );
         }
     }
@@ -294,7 +296,7 @@ class VisualTesting extends Helper {
             // dom structure has changed. In that case, the test is basically
             // guaranteed to fail and need to be updated.
             if (ignoredTexts.length !== textNodes.length) {
-                console.log(
+                console.warn(
                     'The ActorAdvancedE2E helper did *not* substitute in the given ' +
                     `text elements because ${ignoredTexts.length} texts were provided and ` +
                     `${textNodes.length} texts were detected. This means you will ` +
@@ -334,7 +336,6 @@ class VisualTesting extends Helper {
                 const hiddenNodes = document.querySelectorAll(uberCssSelector);
 
                 hiddenNodes.forEach((node) => {
-                    console.log('hiding stuff...')
                     node.classList.toggle('e2e-visual-testing-hidden', hidden)
                 });
             } else {
