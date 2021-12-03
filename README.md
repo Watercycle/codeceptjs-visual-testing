@@ -2,6 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/codeceptjs-visual-testing.svg)](https://badge.fury.io/js/codeceptjs-visual-testing)
 
+![Tests](https://github.com/github/docs/actions/workflows/push.yml/badge.svg?branch=master)
+
 `codeceptjs-visual-testing` is a plugin _(helper)_ for [CodeceptJS](https://codecept.io/) E2E tests that helps verify that your UI doesn't unexpectedly change.
 
 It makes use of [pixelmatch](https://github.com/mapbox/pixelmatch) and [pngjs](https://github.com/lukeapage/pngjs) in order to avoid the ridiculous dependencies for ImageMagick and applies some basic heuristics to help prevent false positives.
