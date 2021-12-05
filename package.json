@@ -23,6 +23,7 @@
     "Testing",
     "Helper"
   ],
+  "files": ["index.js"],
   "author": "Matthew Spero",
   "license": "MIT",
   "dependencies": {

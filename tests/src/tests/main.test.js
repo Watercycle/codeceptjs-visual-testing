@@ -14,7 +14,7 @@ Scenario('using the default options', ({ I }) => {
   I.dontSeeVisualChanges("default-options");
 });
 
-Scenario('using an [allowedMismatchedPixelsPercent] of 0%', async ({ I }) => {
+Scenario('using an `allowedMismatchedPixelsPercent` of 0%', async ({ I }) => {
   I.amOnPage('/');
 
   // This should always fail since the index page shows some unique time text.
@@ -22,10 +22,10 @@ Scenario('using an [allowedMismatchedPixelsPercent] of 0%', async ({ I }) => {
     allowedMismatchedPixelsPercent: 0
   }));
 
-  assert(!passed, "Expected a mismatch, but the test passed.");
+  assert(!passed, "Expected a mismatch, but the there was none.");
 });
 
-Scenario('using [preserveTexts] on the page body', async ({ I }) => {
+Scenario('using `preserveTexts` on the page body', async ({ I }) => {
   I.amOnPage('/');
 
   I.dontSeeVisualChanges("preserve-body", {
