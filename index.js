@@ -329,7 +329,7 @@ class VisualTesting extends Helper {
                 // work with shadow dom elements, but is more reliable and safer than
                 // manually setting display properties inline on elements for the purpose
                 // of restoring the previous value.
-                createDynamicCss('.e2e-visual-testing-hidden { display: none; }');
+                createDynamicCss('.e2e-visual-testing-hidden { display: none !important; }');
 
 
                 const uberCssSelector = options.hideElements.join(',');
